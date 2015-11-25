@@ -55,17 +55,22 @@ public class Node {
 	 */
 	public void teste() {
 
-		if (sim.getAnimal() != null) {
-			int viveNaAgua = JOptionPane.showConfirmDialog(null,
-					"Animal que pensou vive na água ?",
-					" Será, tenho uma idéia.", 0);
-			if (viveNaAgua == JOptionPane.YES_OPTION) {
-				pergunta(sim.getAnimal());
+		
+		int viveNaAgua = JOptionPane.showConfirmDialog(null,
+				"Animal que pensou vive na água ?",
+				" Será, tenho uma idéia.", 0);
+		if (viveNaAgua == JOptionPane.YES_OPTION) {
+			if (this.sim.getSim() != null) {
+				sim.novoTeste();
 			} else {
-				pergunta(nao.getAnimal());
+				pergunta(sim.getAnimal());	
 			}
-		}else{
-			novoTeste();
+		} else {
+			if (this.nao.getNao() != null) {
+				nao.novoTeste();
+			} else {
+				pergunta(nao.getAnimal());	
+			}
 		}
 	}
 
