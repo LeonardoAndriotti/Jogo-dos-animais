@@ -27,6 +27,8 @@ public class Main {
 
 		node.setSim(nodeSim);
 		node.setNao(nodeNao);
+		
+		node.setPergunta(" vive na água");
 
 		boolean condicao = true;
 

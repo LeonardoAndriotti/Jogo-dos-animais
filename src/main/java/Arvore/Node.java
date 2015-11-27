@@ -2,6 +2,7 @@ package Arvore;
 
 import javax.swing.JOptionPane;
 
+
 /**
  * Classe Node responsavel, por toda parte jogavel do jogo. Node sim - pergunta
  * positiva. Node nao - pergunta negativa. String animal - recebe animais
@@ -10,168 +11,77 @@ import javax.swing.JOptionPane;
  *
  */
 public class Node {
-
-	private Node sim = null;
-	private Node nao = null;
-	private String animal;
-	private String pergunta;
-
-	public String getPergunta() {
-		return pergunta;
-	}
-
-	public void setPergunta(String pergunta) {
-		this.pergunta = pergunta;
-	}
-
-	public String getAnimal() {
-		return animal;
-	}
-
-	public void setAnimal(String animal) {
-		this.animal = animal;
-	}
-
-	public Node getSim() {
-		return sim;
-	}
-
+     private Node sim;
+     private Node nao;
+     private String pergunta;
+     private String Animal;
+     
 	public void setSim(Node sim) {
 		this.sim = sim;
 	}
-
-	public Node getNao() {
-		return nao;
-	}
-
 	public void setNao(Node nao) {
 		this.nao = nao;
 	}
-
+	public void setPergunta(String pergunta) {
+		this.pergunta = pergunta;
+	}
+	public void setAnimal(String animal) {
+		Animal = animal;
+	}
+     
 	/**
-	 *  Metodo teste () -  ele ve se sim.getAnimal está vazio, caso não esteja ele executa o Pane fazendo a pergunta.
-	 *  se positiva, chama o Metodo pergunta e passa como parametro o animal dentro de sim.getAnimal
-	 *  se negativo, passa o animal dentro do nao.
+	 * Metodo teste()
+	 * 
+	 * 1º if - faz a comparação para ve se sim vem diferente de null, caso seja, lança a pergunta.
+	 * 2º if - faz o teste quando for possitivo.
+	 * else - teste quando for negativo.
 	 */
-	public void teste() {
-
+	public void teste(){
 		
-		int viveNaAgua = JOptionPane.showConfirmDialog(null,
-				"Animal que pensou vive na água ?",
-				" Será, tenho uma idéia.", 0);
-		if (viveNaAgua == JOptionPane.YES_OPTION) {
-			if (this.sim.getSim() != null) {
-				sim.novoTeste();
-			} else {
-				pergunta(sim.getAnimal());	
-			}
-		} else {
-			if (this.nao.getNao() != null) {
-				nao.novoTeste();
-			} else {
-				pergunta(nao.getAnimal());	
-			}
-		}
-	}
-
-	/**
-	 * faz as comparações para saber se o animal esta correto
-	 * @param animal  - animal que está vindo.
-	 */
-	public void pergunta(String animal) {
-
-		int animalPensado = JOptionPane.showConfirmDialog(null,
-				"Animal que pensou é um " + animal, " Acertei", 0);
-
-		if (animalPensado == JOptionPane.YES_OPTION) {
-			mensagemAcerto();
-
-		} else {
-
-			novoAnimal(animal);
-		}
-
-	}
-
-	/**
-	 * caso a resposta seja negativa, o computador pede para que o usuario informe o animal que está pensando, tirando o animal sim colocando no não e colocando o novo no lugar
-	 * @param animal
-	 * @return
-	 */
-	public String novoAnimal(String animal) {
-
-		String novoAnimal = JOptionPane
-				.showInputDialog("Qual animal está pensando ?");
-
-		String dica = JOptionPane.showInputDialog(null, "O(a) " + novoAnimal
-				+ " ..................... e o(a) " + animal + " não.",
+		 if(this.sim != null){
+			 int condicao = JOptionPane.showConfirmDialog(null, "O animal que está pensando ele(a) :"+ this.pergunta);
+			 if(condicao == JOptionPane.YES_OPTION){
+				 this.sim.teste();
+			     }else{
+					  this.nao.teste();
+				 }
+			 }else{
+				 int teste = JOptionPane.showConfirmDialog(null, "Animal que você está pensando é um(a): " + this.Animal);
+				 
+				 if (teste == JOptionPane.YES_OPTION){
+					 mensagemMaquina();
+				 }else{
+					  novoAnimal();
+				 }
+			 }
+		 }
+	
+	
+	public void novoAnimal(){
+		String novoBicho = JOptionPane.showInputDialog(null, " Que Animal está pensando?");
+			String dica = JOptionPane.showInputDialog(null,
+				"O(a) " + novoBicho + " ..................... e o(a) " + this.Animal + " não.",
 				"Qual a diferença entre os animais?", 0);
+			
+			Node novoNodeNao = new Node();
+			novoNodeNao.setAnimal(this.Animal);
 
-		
-		System.out.println("anima"+ novoAnimal);
-		System.out.println("dica"+ dica);
-		
-		Node novoNao = new Node();
-		novoNao.setAnimal(novoAnimal);
+			Node novoNodeSim = new Node();
+			novoNodeSim.setAnimal(novoBicho);
+			
+			this.pergunta = dica;
+			
+			this.nao = new Node();
+			this.sim = new Node();
 
-		Node novoSim = new Node();
-		novoSim.setAnimal(novoAnimal);
-
-		this.pergunta = dica;
-
-		this.nao = new Node();
-		this.sim = new Node();
-
-		this.nao = novoNao;
-		this.sim = novoSim;
-
-		return animal;
+			this.nao = novoNodeNao;
+			this.sim = novoNodeSim;
 	}
-
-/**
- * 
- */
-	public void novoTeste() {
-		/*
-		 * Testa se existem nós baixo e executa um deles, caso contrário entra
-		 * no else e sugere esse animal
-		 */
-		if (this.sim != null) {
-			int questao = JOptionPane.showConfirmDialog(null,
-					"O animal que você pensou " + this.pergunta,
-					"Por acaso...", 0);
-			if (questao == 0) {
-				sim.novoTeste();
-			} else {
-				nao.novoTeste();
-			}
-
-		} else {
-			boolean acerteiOAnimal = sugerirAnimal();
-			if (acerteiOAnimal) {
-				JOptionPane.showConfirmDialog(null, "Animal que pensou é um "
-						+ nao.getAnimal(), "Acertei", 0);
-			} else {
-				novoAnimal(getAnimal());
-			}
-		}
-
-	}
-
-	private boolean sugerirAnimal() {
-
-		int animalSugerido = JOptionPane.showConfirmDialog(null,
-				"O animal que você pensou é " + this.animal, "Sei o animal", 0);
-		return (animalSugerido == 0);
-	}
-
-	/**
-	 * Metodo da mensagem quando o computador acerta !!!
-	 */
-	private void mensagemAcerto() {
-
-		JOptionPane.showMessageDialog(null, "Opa, Acertei  <Ô>",
-				"Estou Com sorte", 0);
-
-	}
+	
+	 public void mensagemMaquina(){
+		 JOptionPane.showMessageDialog(null, "Acertei novamente !!!");
+	 }
+	 
+	 
+     
 }
